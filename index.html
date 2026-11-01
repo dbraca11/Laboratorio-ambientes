@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Clone - Producción</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #eaeded; }
+        /* Header */
+        header { background-color: #131921; color: white; display: flex; align-items: center; padding: 10px 20px; gap: 20px; }
+        .logo { font-size: 24px; font-weight: bold; color: #febd69; cursor: pointer; }
+        .search-bar { flex-grow: 1; display: flex; }
+        .search-bar input { width: 100%; padding: 8px; border: none; border-radius: 4px 0 0 4px; outline: none; }
+        .search-bar button { padding: 8px 15px; background-color: #febd69; border: none; border-radius: 0 4px 4px 0; cursor: pointer; font-weight: bold; }
+        .cart { font-weight: bold; cursor: pointer; }
+        /* Nav */
+        .nav-bar { background-color: #232f3e; color: white; padding: 8px 20px; display: flex; gap: 15px; font-size: 14px; }
+        .nav-bar span { cursor: pointer; }
+        .nav-bar span:hover { border: 1px solid white; border-radius: 2px; padding: 0 2px; }
+        /* Hero */
+        .hero { background-color: #f5cba7; height: 300px; display: flex; justify-content: center; align-items: center; text-align: center; margin-bottom: 20px; position: relative; }
+        .hero-text h1 { margin: 0; color: #333; font-size: 32px; }
+        .hero-text p { color: #555; }
+        .hero-btn { margin-top: 15px; padding: 10px 20px; background-color: #ffd814; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        /* Grid de Productos */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 0 20px 20px 20px; }
+        .card { background: white; padding: 20px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .card h2 { font-size: 18px; margin-top: 0; }
+        .card img { width: 100%; height: 150px; object-fit: cover; background-color: #f0f0f0; margin-bottom: 15px; border-radius: 4px; }
+        .card button { margin-top: auto; padding: 8px; background-color: #ffd814; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        .card button:hover { background-color: #f7ca00; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="alert('¡Bienvenido a Amazon Clone!')">amazon.clone</div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar productos...">
+            <button onclick="buscar()">🔍</button>
+        </div>
+        <div class="cart" onclick="verCarrito()">🛒 Carrito (<span id="cartCount">0</span>)</div>
+    </header>
+
+    <div class="nav-bar">
+        <span>Todo</span>
+        <span>Ofertas</span>
+        <span>Electrónicos</span>
+        <span>Moda</span>
+        <span>Hogar</span>
+        <span>Libros</span>
+    </div>
+
+    <div class="hero">
+        <div class="hero-text">
+            <h1>Pantalla inteligente HD con Alexa</h1>
+            <p>Echo Show 2da generación</p>
+            <button class="hero-btn" onclick="comprar('Echo Show')">Comprar ahora</button>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="card">
+            <h2>Ofertas en tendencia</h2>
+            <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&q=80" alt="Gafas">
+            <p>HAWKERS - Hasta un -44%</p>
+            <button onclick="comprar('Gafas Hawkers')">Añadir al carrito</button>
+        </div>
+        <div class="card">
+            <h2>Ahorra en electrónicos</h2>
+            <img src="https://images.unsplash.com/photo-1598327105666-5b89351cb31b?w=400&q=80" alt="Celular">
+            <p>Celulares y accesorios</p>
+            <button onclick="comprar('Celular')">Añadir al carrito</button>
+        </div>
+        <div class="card">
+            <h2>Ofertas de oficina</h2>
+            <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&q=80" alt="Impresora">
+            <p>Impresoras y proyectores</p>
+            <button onclick="comprar('Impresora')">Añadir al carrito</button>
+        </div>
+        <div class="card" style="background-color: #fef8f2;">
+            <h2>Inicia sesión para vivir tu mejor experiencia</h2>
+            <p>Obtén acceso a ofertas exclusivas y seguimiento de pedidos.</p>
+            <button style="background-color: #ffd814;" onclick="alert('Redirigiendo al login...')">Iniciar sesión de forma segura</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = 0;
+        
+        function comprar(producto) {
+            cart++;
+            document.getElementById('cartCount').innerText = cart;
+            alert('¡' + producto + ' añadido al carrito!');
+        }
+
+        function buscar() {
+            const query = document.getElementById('searchInput').value;
+            if(query) {
+                alert('Buscando: ' + query + '... (Simulación)');
+            } else {
+                alert('Por favor, escribe algo para buscar.');
+            }
+        }
+
+        function verCarrito() {
+            alert('Tienes ' + cart + ' productos en tu carrito.');
+        }
+    </script>
+</body>
+</html>
