@@ -7,6 +7,12 @@ on:
       - release
       - main
 
+# Permisos necesarios para desplegar en GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   deploy-dev:
     if: github.ref == 'refs/heads/develop'
@@ -15,10 +21,8 @@ jobs:
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
-      - name: "Desplegando a Desarrollo"
-        run: |
-          echo "🚀 Desplegando en el entorno de DESARROLLO..."
-          echo "Usando la cadena de conexión: ${{ secrets.DB_CONNECTION_STRING }}"
+      - name: "Simulando despliegue a Desarrollo"
+        run: echo "🚀 Código validado en Desarrollo."
 
   deploy-qa:
     if: github.ref == 'refs/heads/release'
@@ -27,19 +31,27 @@ jobs:
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
-      - name: "Desplegando a Calidad (Staging)"
-        run: |
-          echo "🧪 Desplegando en el entorno de CALIDAD..."
-          echo "Usando la cadena de conexión: ${{ secrets.DB_CONNECTION_STRING }}"
+      - name: "Simulando despliegue a Calidad (Staging)"
+        run: echo "🧪 Código validado en Calidad. Listo para producción."
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: production
+    environment: 
+      name: production
+      url: ${{ steps.deployment.outputs.page_url }} # Muestra la URL en GitHub
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
-      - name: "Desplegando a Producción"
-        run: |
-          echo "🔥 Desplegando en el entorno de PRODUCCIÓN..."
-          echo "Usando la cadena de conexión: ${{ secrets.DB_CONNECTION_STRING }}"
+      
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Subir artefacto de la web
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.' # Sube todo el contenido de la raíz (nuestro index.html)
+          
+      - name: Desplegar a Producción (GitHub Pages)
+        id: deployment
+        uses: actions/deploy-pages@v4
