@@ -1,0 +1,45 @@
+name: Pipeline de 3 Ambientes
+
+on:
+  push:
+    branches:
+      - develop
+      - release
+      - main
+
+jobs:
+  deploy-dev:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: "Desplegando a Desarrollo"
+        run: |
+          echo "🚀 Desplegando en el entorno de DESARROLLO..."
+          echo "Usando la cadena de conexión: ${{ secrets.DB_CONNECTION_STRING }}"
+
+  deploy-qa:
+    if: github.ref == 'refs/heads/release'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: "Desplegando a Calidad (Staging)"
+        run: |
+          echo "🧪 Desplegando en el entorno de CALIDAD..."
+          echo "Usando la cadena de conexión: ${{ secrets.DB_CONNECTION_STRING }}"
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: "Desplegando a Producción"
+        run: |
+          echo "🔥 Desplegando en el entorno de PRODUCCIÓN..."
+          echo "Usando la cadena de conexión: ${{ secrets.DB_CONNECTION_STRING }}"
