@@ -1,0 +1,31 @@
+name: DAST Security Scan
+
+on:
+  workflow_dispatch: # Permite ejecutarlo manualmente desde la pestaña Actions
+  # También puedes hacer que corra después de tu pipeline principal
+  workflow_run:
+    workflows: ["Pipeline de 3 Ambientes"]
+    types: [completed]
+    branches: [release]
+
+jobs:
+  zap-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      
+      - name: Escaneo de seguridad con OWASP ZAP
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          # Escaneará tu página de producción como ejemplo
+          target: 'https://dbraca11.github.io/Laboratorio-ambientes/'
+          cmd_options: '-a -j'
+          allow_issue_writing: false
+      
+      - name: Subir reporte de ZAP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-baseline-report
+          path: report_html.html
