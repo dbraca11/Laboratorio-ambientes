@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   html-validation:
     runs-on: ubuntu-latest
