@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: [main]
 
+# Permisos mínimos requeridos por seguridad (CodeQL)
+permissions:
+  contents: read
+
 jobs:
   html-validation:
     runs-on: ubuntu-latest
