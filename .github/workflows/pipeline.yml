@@ -55,3 +55,23 @@ jobs:
       - name: Desplegar a Producción (GitHub Pages)
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Health Check (Verificar que la web está viva)
+        run: |
+          URL="https://dbraca11.github.io/Laboratorio-ambientes/"
+          echo "Esperando a que la CDN se propague..."
+          sleep 15
+          
+          # Reintenta hasta 3 veces si falla
+          for i in {1..3}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$URL" || echo "000")
+            if [ "$STATUS" -eq 200 ]; then
+              echo "✅ Health Check exitoso: HTTP $STATUS"
+              exit 0
+            fi
+            echo "Intento $i fallido (Código: $STATUS). Reintentando en 10s..."
+            sleep 10
+          done
+          
+          echo "❌ Health Check fallido tras 3 intentos. La página no responde correctamente."
+          exit 1
