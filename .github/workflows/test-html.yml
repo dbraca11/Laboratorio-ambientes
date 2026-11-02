@@ -1,0 +1,25 @@
+name: HTML Automated Tests
+on:
+  push:
+    branches: [develop, release]
+  pull_request:
+    branches: [main]
+
+jobs:
+  html-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Descargar e instalar htmltest
+        run: |
+          wget https://github.com/wjdp/htmltest/releases/download/v0.17.0/htmltest_0.17.0_linux_amd64.tar.gz
+          tar -xzf htmltest_0.17.0_linux_amd64.tar.gz
+          chmod +x htmltest
+          
+      - name: Ejecutar validación HTML
+        run: |
+          # Crea una configuración mínima para ignorar enlaces externos
+          echo "IgnoreURLs:" > .htmltest.yml
+          echo "  - \"https://images.unsplash.com\"" >> .htmltest.yml
+          ./htmltest index.html
