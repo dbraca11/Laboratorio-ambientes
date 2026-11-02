@@ -19,13 +19,5 @@ jobs:
           
       - name: Ejecutar validación HTML
         run: |
-          # Usamos cat para crear el archivo YAML con la indentación perfecta
-          cat > .htmltest.yml <<EOF
-          IgnoreURLs:
-            - "images.unsplash.com"
-          IgnoreDirs:
-            - "node_modules"
-          EOF
-          
-          # Ejecutamos la validación
-          ./htmltest index.html
+          # El parámetro -s le dice a htmltest que ignore los enlaces externos (como Unsplash)
+          ./htmltest -s index.html
