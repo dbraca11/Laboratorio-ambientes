@@ -22,5 +22,4 @@ jobs:
           
       - name: Ejecutar validación HTML
         run: |
-          # El parámetro -s le dice a htmltest que ignore los enlaces externos (como Unsplash)
           ./htmltest -s index.html
