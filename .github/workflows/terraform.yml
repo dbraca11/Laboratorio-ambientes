@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-# Permisos mínimos requeridos por seguridad (CodeQL)
 permissions:
   contents: read
 
@@ -20,7 +19,6 @@ jobs:
       - name: Iniciar LocalStack (AWS emulado)
         run: |
           docker run -d -p 4566:4566 localstack/localstack
-          echo "Esperando a que LocalStack arranque..."
           sleep 15
           
       - name: Instalar Terraform
