@@ -3,7 +3,13 @@ name: Terraform IaC Pipeline
 on:
   push:
     branches: [develop]
-    paths: ['terraform/**'] # Solo se ejecuta si cambias algo en la carpeta terraform
+    paths: ['terraform/**']
+  pull_request:
+    branches: [main] # <-- Añadido para que corra en los PRs a Producción
+
+# Permisos mínimos requeridos por seguridad (CodeQL)
+permissions:
+  contents: read
 
 permissions:
   contents: read
@@ -19,7 +25,7 @@ jobs:
         run: |
           docker run -d -p 4566:4566 localstack/localstack
           echo "Esperando a que LocalStack arranque..."
-          sleep 15 # Damos tiempo a que el contenedor levante
+          sleep 15
           
       - name: Instalar Terraform
         uses: hashicorp/setup-terraform@v3
