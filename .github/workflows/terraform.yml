@@ -1,0 +1,38 @@
+name: Terraform IaC Pipeline
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      
+      - name: Iniciar LocalStack (AWS emulado)
+        run: |
+          docker run -d -p 4566:4566 localstack/localstack
+          sleep 15
+          
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.8.0"
+
+      - name: Terraform Init, Validate y Plan
+        working-directory: ./terraform
+        env:
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_ENDPOINT_URL: http://localhost:4566
+        run: |
+          terraform init -backend=false
+          terraform validate
+          terraform plan
